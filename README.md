@@ -162,6 +162,14 @@ Quá trình dọn dẹp:
 
 > **Tại sao cần cleanup script riêng?** `apt remove` đơn thuần không xóa config files và data. Nếu reinstall sau đó, Netdata sẽ dùng lại config cũ — có thể gây lỗi khó debug. `--purge` và xóa thủ công các thư mục đảm bảo clean slate hoàn toàn.
 
+
+### Bước 8: Deploy với Github action
+1. Trên GitHub — Vào repo → Settings → Actions → Runners → New self-hosted runner → copy token (hết hạn sau 1 giờ)
+2. Trên Ubuntu Server — Copy register-runner.sh vào repo, rồi:
+export GITHUB_REPO="thienminhdevsys/simple-monitoring"
+export GITHUB_TOKEN="token-vừa-copy-ở-bước-1"
+bash register-runner.sh
+3. Push code — Runner đăng ký xong, chỉ cần git push origin main là workflow tự chạy
 ---
 
 ## 🔍 Giải thích kỹ thuật quan trọng
