@@ -1,0 +1,48 @@
+name: Deploy Monitoring
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # Cho phép chạy thủ công từ GitHub UI
+
+jobs:
+  deploy:
+    name: Install & Verify Netdata
+    runs-on: self-hosted     # Chạy trên Ubuntu Server của bạn, không phải GitHub cloud
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify scripts are executable
+        run: chmod +x setup.sh cleanup.sh test_dashboard.sh
+
+      - name: Setup Netdata
+        run: bash setup.sh
+
+      - name: Test Dashboard & Metrics
+        run: bash test_dashboard.sh
+
+      - name: Report dashboard URL
+        run: |
+          IP=$(hostname -I | awk '{print $1}')
+          echo "### ✅ Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | URL |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🖥️ Local | http://localhost:19999 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌐 Network | http://${IP}:19999 |" >> $GITHUB_STEP_SUMMARY
+
+  teardown:
+    name: Cleanup (Manual Only)
+    runs-on: self-hosted
+    if: github.event_name == 'workflow_dispatch'   # Chỉ chạy khi trigger thủ công
+    needs: deploy
+    environment: production                         # Yêu cầu approval trên GitHub trước khi chạy
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run cleanup
+        run: echo "YES" | bash cleanup.sh            # Tự động trả lời YES cho confirm prompt
