@@ -81,7 +81,7 @@ create_cpu_load() {
 create_disk_io() {
   log "Creating disk I/O activity..."
 
-  dd if=/dev/zero of="${DISK_TEST_FILE}" bs=64M count=8 oflag=direct status=progress || true
+  dd if=/dev/zero of="${DISK_TEST_FILE}" bs=16M count=2 oflag=direct status=progress || true
   sync
   rm -f "${DISK_TEST_FILE}"
 
@@ -102,12 +102,14 @@ check_metric() {
 }
 
 check_metrics() {
+  log "Waiting for Netdata to collect initial metrics..."
+  sleep 15
   log "Checking basic Netdata metrics via REST API..."
 
   check_metric "system.cpu"
   check_metric "system.ram"
   check_metric "system.load"
-  check_metric "disk_space._"
+  check_metric "disk_space./"
 }
 
 show_active_alerts() {
