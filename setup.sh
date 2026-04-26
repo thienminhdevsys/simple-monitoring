@@ -49,7 +49,7 @@ check_os() {
 
 check_sudo() {
   log "Checking sudo permission..."
-  sudo -v
+  sudo -n true || { err "No passwordless sudo. Run: sudo visudo"; exit 1; }
 }
 
 install_dependencies() {
