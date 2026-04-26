@@ -3,9 +3,9 @@
 Dự án này thiết lập **Netdata** — một công cụ monitoring real-time mạnh mẽ — trên Ubuntu Server, kèm script tự động hóa toàn bộ quy trình: cài đặt, kiểm thử, và gỡ cài đặt.
 
 > **Mục tiêu học thuật:** Nắm vững cách deploy monitoring stack từ đầu, hiểu từng bước WHY chứ không chỉ HOW.
-Link mô tả project: https://roadmap.sh/projects/simple-monitoring-dashboard
----
 
+---
+Link mô tả project: https://roadmap.sh/projects/simple-monitoring-dashboard
 ## 📸 Kết quả thực tế
 
 Dashboard Netdata sau khi cài đặt thành công — hiển thị CPU, RAM, Disk I/O, Network real-time:
