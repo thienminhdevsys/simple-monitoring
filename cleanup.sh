@@ -67,6 +67,16 @@ uninstall_netdata() {
       exit 1
     }
   fi
+# Force kill nếu process van con
+  if pgrep -x netdata > /dev/null 2>&1; then
+    log "Force killing remaining netdata processes..."
+    sudo killall netdata || true
+    sleep 2
+  fi
+
+# Xoa binary
+  sudo rm -f /usr/sbin/netdata
+
 }
 
 _apt_remove() {
